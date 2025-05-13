@@ -11,7 +11,6 @@ const UsersPage = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [inputValue, setInputValue] = useState('');
     const [editUserId, setEditUserId] = useState<string | null>(null);
-    const [isMounted, setIsMounted] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setisLoading] = useState<boolean>(false);
 
@@ -26,7 +25,6 @@ const UsersPage = () => {
                 setError('Failed to fetch users');
             } finally {
                 setisLoading(false);
-                setIsMounted(true);
             }
         };
         fetchUsers();
@@ -91,8 +89,6 @@ const UsersPage = () => {
             setEditUserId(id);
         }
     };
-
-    if (!isMounted) return null;
 
     return (
         <div className="h-screen bg-gradient-to-br from-gray-100 to-blue-200 flex items-center justify-center p-4 sm:p-6">
