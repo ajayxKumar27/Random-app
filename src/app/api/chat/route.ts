@@ -8,7 +8,7 @@ export async function GET(req: NextRequest, { params }: { params: { room: string
   return NextResponse.json(messages);
 }
 
-export async function POST(req: Request, { params }: { params: { room: string } }) {
+export async function POST(req: NextRequest, { params }: { params: { room: string } }) {
   const room = params.room;
   const body = await req.json();
 
