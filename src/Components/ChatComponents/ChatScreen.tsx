@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { IoChatbubblesOutline } from "react-icons/io5";
 
 type Message = {
@@ -43,8 +43,15 @@ const ChatScreen: React.FC<ChatScreenProps> = ({
   sendMessage,
   userId,
 }) => {
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  // Auto-scroll to the last message
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   return (
-    <div className="h-screen bg-gray-100 flex items-center justify-center p-4">
+    <div className="h-screen bg-gray-100 flex items-center justify-center p-4 sm:p-0">
       <div className="w-full max-w-md bg-white shadow-lg rounded-xl flex flex-col h-full sm:h-[80vh]">
         {/* Header */}
         <div className="bg-blue-600 text-white text-lg font-bold p-4 rounded-t-xl flex items-center justify-between">
@@ -78,6 +85,8 @@ const ChatScreen: React.FC<ChatScreenProps> = ({
               </div>
             </div>
           ))}
+          {/* Auto-scroll anchor */}
+          <div ref={messagesEndRef} />
         </div>
 
         {/* Input */}
