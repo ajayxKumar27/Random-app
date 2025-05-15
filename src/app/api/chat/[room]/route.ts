@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 type Message = {
   id: number;
@@ -15,18 +15,21 @@ const rooms: Record<string, Message[]> = {
 };
 
 // GET: Fetch messages for a specific room
-export async function GET(request: Request, { params }: { params: { room: string } }) {
-  const { room } = params;
-  if (!rooms[room]) {
+export async function GET(request: NextRequest) {
+  const room = request.nextUrl.pathname.split("/").pop(); // Extract the room name from the URL
+
+  if (!room || !rooms[room]) {
     return NextResponse.json({ error: "Room not found" }, { status: 404 });
   }
+
   return NextResponse.json(rooms[room]);
 }
 
 // POST: Add a message to a specific room
-export async function POST(request: Request, { params }: { params: { room: string } }) {
-  const { room } = params;
-  if (!rooms[room]) {
+export async function POST(request: NextRequest) {
+  const room = request.nextUrl.pathname.split("/").pop(); // Extract the room name from the URL
+
+  if (!room || !rooms[room]) {
     return NextResponse.json({ error: "Room not found" }, { status: 404 });
   }
 
