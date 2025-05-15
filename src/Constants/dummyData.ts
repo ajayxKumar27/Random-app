@@ -1,4 +1,5 @@
 import { FaAppStoreIos, FaUser } from "react-icons/fa";
+import { IoChatbubblesOutline } from "react-icons/io5";
 
 export const HomePageItems = [
   {
@@ -10,9 +11,9 @@ export const HomePageItems = [
   },
   {
     id: 2,
-    title: "Admin Panel",
-    description: "Manage admin settings and users",
-    icon: FaUser, 
-    route: "/admin-panel",
+    title: "Chat App",
+    description: "let's chat with each other",
+    icon: IoChatbubblesOutline , 
+    route: "/chat",
   },
 ];
