@@ -6,7 +6,7 @@ type Message = {
   id: number;
   text: string;
   senderId: string;
-  name?: string; 
+  name?: string;
   timestamp?: number;
 };
 
@@ -90,9 +90,7 @@ const ChatScreen: React.FC<ChatScreenProps> = ({
         <header className="bg-gradient-to-r from-blue-600 to-blue-400 text-white text-lg font-bold p-4 flex items-center justify-between shadow sm:rounded-t-3xl rounded-none">
           <div className="flex items-center gap-2">
             <IoChatbubblesOutline className="text-2xl" />
-            <span className="tracking-wide">
-              Room: <span className="font-extrabold">{room?.name}</span>
-            </span>
+            <span className="text-white font-light" > {room?.name} </span>
           </div>
           <button
             type="button"
@@ -115,7 +113,7 @@ const ChatScreen: React.FC<ChatScreenProps> = ({
             return (
               <div
                 key={message.id}
-                className={`flex ${isMe ? "justify-end" : "justify-start"} w-full relative ${visibleTimeId ===message.id ? "mb-12" : ""}`}
+                className={`flex ${isMe ? "justify-end" : "justify-start"} w-full relative ${visibleTimeId === message.id ? "mb-12" : ""}`}
                 onClick={() => setVisibleTimeId(message.id)}
                 title="Click to show time"
               >
@@ -129,9 +127,8 @@ const ChatScreen: React.FC<ChatScreenProps> = ({
                 </div>
                 {visibleTimeId === message.id && (
                   <span
-                    className={`absolute ${
-                      isMe ? "right-0" : "left-0"
-                    } -bottom-11 text-xs text-gray-600 bg-white/90 px-2 py-1 rounded shadow`}
+                    className={`absolute ${isMe ? "right-0" : "left-0"
+                      } -bottom-11 text-xs text-gray-600 bg-white/90 px-2 py-1 rounded shadow`}
                   >
                     <div> {isMe ? "You" : message.name || "Anonymous"}</div>
                     <div> {formatTimeAgo(message.timestamp)} </div>
