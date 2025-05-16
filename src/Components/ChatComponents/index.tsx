@@ -11,10 +11,16 @@ type Message = {
   timestamp: number;
 };
 
-const ROOMS = ["room1", "room2", "room3", "room4", "room5"];
+const ROOMS = [
+  { id: "room1", name: "Cozy Corner" },
+  { id: "room2", name: "Chill Zone" },
+  { id: "room3", name: "Quiet Nook" },
+  { id: "room4", name: "Zen Room" },
+  { id: "room5", name: "Calm Space" },
+];
 
 const ChatComponent: React.FC = () => {
-  const [room, setRoom] = useState<string | null>(null);
+  const [room, setRoom] = useState<{ id: string; name: string } | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
   const [name, setName] = useState<string>("");
@@ -43,7 +49,7 @@ const ChatComponent: React.FC = () => {
     const fetchMessages = async () => {
       try {
         setIsLoadingMessages(true);
-        const response = await fetch(`/api/chat/${room}`);
+        const response = await fetch(`/api/chat/${room.id}`);
         if (!response.ok) throw new Error("Failed to fetch messages");
         const data = await response.json();
         setMessages(data);
@@ -147,13 +153,13 @@ const ChatComponent: React.FC = () => {
         <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-6">
           <h1 className="text-2xl font-bold text-center mb-4">Select a Room</h1>
           <div className="grid grid-cols-2 gap-4">
-            {ROOMS.map((roomName) => (
+            {ROOMS.map((roomItem) => (
               <button
-                key={roomName}
-                onClick={() => setRoom(roomName)}
+                key={roomItem.id}
+                onClick={() => setRoom(roomItem)}
                 className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200"
               >
-                {roomName}
+                {roomItem.name}
               </button>
             ))}
           </div>

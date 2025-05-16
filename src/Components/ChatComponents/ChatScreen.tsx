@@ -11,8 +11,8 @@ type Message = {
 };
 
 type ChatScreenProps = {
-  room: string;
-  setRoom: (room: string | null) => void;
+  room: { id: string; name: string };
+  setRoom: (room: { id: string; name: string } | null) => void;
   messages: Message[];
   inputValue: string;
   setInputValue: (value: string) => void;
@@ -91,7 +91,7 @@ const ChatScreen: React.FC<ChatScreenProps> = ({
           <div className="flex items-center gap-2">
             <IoChatbubblesOutline className="text-2xl" />
             <span className="tracking-wide">
-              Room: <span className="font-extrabold">{room}</span>
+              Room: <span className="font-extrabold">{room?.name}</span>
             </span>
           </div>
           <button
