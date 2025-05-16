@@ -13,10 +13,10 @@ type Message = {
 
 const ROOMS = [
   { id: "room1", name: "Cozy Corner" },
-  { id: "room2", name: "Chill Zone" },
+  { id: "room2", name: "Cyber Dome" },
   { id: "room3", name: "Quiet Nook" },
-  { id: "room4", name: "Zen Room" },
-  { id: "room5", name: "Calm Space" },
+  { id: "room4", name: "Fusion Deck" },
+  { id: "room5", name: "Nova Lounge" },
 ];
 
 const ChatComponent: React.FC = () => {
