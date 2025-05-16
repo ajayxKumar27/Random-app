@@ -65,10 +65,13 @@ const ChatComponent: React.FC = () => {
     const text = inputValue.trim();
     if (!text || !room) return;
 
+    // Always get the latest name from localStorage
+    const userName = localStorage.getItem("userName") || name;
+
     const messagePayload = {
       text,
       senderId: userIdRef.current,
-      name,
+      name: userName,
       timestamp: Date.now(),
     };
 
@@ -110,7 +113,7 @@ const ChatComponent: React.FC = () => {
       <div className="h-screen flex items-center justify-center bg-gradient-to-br from-blue-200 via-white to-purple-200">
         <div className="bg-white/80 p-8 rounded-3xl shadow-2xl w-full max-w-sm border border-blue-200 backdrop-blur-md flex flex-col items-center">
           <div className="mb-4 text-center">
-            <div className="bg-gradient-to-br from-blue-400 to-purple-400 rounded-full p-3 mb-2 shadow-lg">
+            <div className="bg-gradient-to-br from-blue-400 to-purple-400 rounded-full mb-2 shadow-lg w-6/12 h-20 flex items-center justify-center m-auto text-center">
               <svg width="36" height="36" fill="none" viewBox="0 0 24 24">
                 <path fill="#fff" d="M12 12c2.7 0 8 1.34 8 4v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2c0-2.66 5.3-4 8-4Zm0-2a4 4 0 1 1 0-8 4 4 0 0 1 0 8Z"/>
               </svg>

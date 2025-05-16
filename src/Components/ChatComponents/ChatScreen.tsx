@@ -6,6 +6,7 @@ type Message = {
   id: number;
   text: string;
   senderId: string;
+  name?: string; 
   timestamp?: number;
 };
 
@@ -82,7 +83,6 @@ const ChatScreen: React.FC<ChatScreenProps> = ({
     }
   }, [visibleTimeId]);
 
-
   return (
     <div className="h-screen w-screen bg-gradient-to-br from-blue-100 via-white to-blue-200 flex items-center justify-center p-0 sm:p-4">
       <div className="w-full max-w-md bg-white/80 shadow-2xl rounded-3xl flex flex-col h-full sm:h-[80vh] border border-blue-200 backdrop-blur-md">
@@ -107,7 +107,6 @@ const ChatScreen: React.FC<ChatScreenProps> = ({
 
         {/* Messages */}
         <section className="flex-1 overflow-y-auto p-4 space-y-3 relative bg-transparent">
-
           {error && (
             <div className="text-center text-red-500 text-sm">{error}</div>
           )}
@@ -116,7 +115,7 @@ const ChatScreen: React.FC<ChatScreenProps> = ({
             return (
               <div
                 key={message.id}
-                className={`flex ${isMe ? "justify-end" : "justify-start"} w-full relative ${visibleTimeId ===message.id ? "mb-8" : ""}`}
+                className={`flex ${isMe ? "justify-end" : "justify-start"} w-full relative ${visibleTimeId ===message.id ? "mb-12" : ""}`}
                 onClick={() => setVisibleTimeId(message.id)}
                 title="Click to show time"
               >
@@ -132,9 +131,10 @@ const ChatScreen: React.FC<ChatScreenProps> = ({
                   <span
                     className={`absolute ${
                       isMe ? "right-0" : "left-0"
-                    } -bottom-7 text-xs text-gray-600 bg-white/90 px-2 py-1 rounded shadow`}
+                    } -bottom-11 text-xs text-gray-600 bg-white/90 px-2 py-1 rounded shadow`}
                   >
-                    {formatTimeAgo(message.timestamp)}
+                    <div> {isMe ? "You" : message.name || "Anonymous"}</div>
+                    <div> {formatTimeAgo(message.timestamp)} </div>
                   </span>
                 )}
               </div>

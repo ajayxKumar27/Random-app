@@ -4,6 +4,7 @@ type Message = {
   id: number;
   text: string;
   senderId: string;
+  name?: string; // Add name
   timestamp?: any;
 };
 
@@ -17,7 +18,7 @@ const rooms: Record<string, Message[]> = {
 
 // GET: Fetch messages for a specific room
 export async function GET(request: NextRequest) {
-  const room = request.nextUrl.pathname.split("/").pop(); // Extract the room name from the URL
+  const room = request.nextUrl.pathname.split("/").pop();
 
   if (!room || !(room in rooms)) {
     return NextResponse.json({ error: "Room not found" }, { status: 404 });
@@ -44,6 +45,7 @@ export async function POST(request: NextRequest) {
     id: rooms[room].length + 1,
     text: body.text,
     senderId: body.senderId,
+    name: body.name || "Anonymous", // Save name
     timestamp: body.timestamp || Date.now(),
   };
 
