@@ -75,7 +75,7 @@ const ChatComponent: React.FC = () => {
               <button
                 key={roomName}
                 onClick={() => setRoom(roomName)}
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 cursor-pointer transition duration-200"
               >
                 {roomName}
               </button>
