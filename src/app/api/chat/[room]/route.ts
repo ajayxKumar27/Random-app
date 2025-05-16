@@ -3,7 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 type Message = {
   id: number;
   text: string;
-  sender: string;
+  senderId: string;
+  timestamp?: any;
 };
 
 const rooms: Record<string, Message[]> = {
@@ -18,7 +19,7 @@ const rooms: Record<string, Message[]> = {
 export async function GET(request: NextRequest) {
   const room = request.nextUrl.pathname.split("/").pop(); // Extract the room name from the URL
 
-  if (!room || !rooms[room]) {
+  if (!room || !(room in rooms)) {
     return NextResponse.json({ error: "Room not found" }, { status: 404 });
   }
 
@@ -27,14 +28,25 @@ export async function GET(request: NextRequest) {
 
 // POST: Add a message to a specific room
 export async function POST(request: NextRequest) {
-  const room = request.nextUrl.pathname.split("/").pop(); // Extract the room name from the URL
+  const room = request.nextUrl.pathname.split("/").pop();
 
-  if (!room || !rooms[room]) {
+  if (!room || !(room in rooms)) {
     return NextResponse.json({ error: "Room not found" }, { status: 404 });
   }
 
   const body = await request.json();
-  const newMessage = { id: rooms[room].length + 1, ...body };
+
+  if (!body.text || !body.senderId) {
+    return NextResponse.json({ error: "Missing text or senderId" }, { status: 400 });
+  }
+
+  const newMessage: Message = {
+    id: rooms[room].length + 1,
+    text: body.text,
+    senderId: body.senderId,
+    timestamp: body.timestamp || Date.now(),
+  };
+
   rooms[room].push(newMessage);
   return NextResponse.json(newMessage);
 }
