@@ -56,7 +56,7 @@ const ChatScreen: React.FC<ChatScreenProps> = ({
     <div className="h-screen w-screen bg-gradient-to-br from-blue-100 via-white to-blue-200 flex items-center justify-center p-0 sm:p-4">
       <div className="w-full max-w-md bg-white/80 shadow-2xl rounded-3xl flex flex-col h-full sm:h-[80vh] border border-blue-200 backdrop-blur-md">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-400 text-white text-lg font-bold p-4 rounded-t-3xl flex items-center justify-between shadow">
+        <div className="bg-gradient-to-r from-blue-600 to-blue-400 text-white text-lg font-bold p-4 flex items-center justify-between shadow sm:rounded-t-3xl rounded-none">
           <div className="flex items-center gap-2">
             <IoChatbubblesOutline className="text-2xl" />
             <span className="tracking-wide">Room: <span className="font-extrabold">{room}</span></span>
@@ -67,7 +67,7 @@ const ChatScreen: React.FC<ChatScreenProps> = ({
             onClick={() => setRoom(null)}
             title="Leave Room"
             className="text-white transition duration-200 cursor-pointer">
-           <RxExit className="text-white" />
+            <RxExit className="text-white" />
           </button>
         </div>
 
@@ -96,7 +96,7 @@ const ChatScreen: React.FC<ChatScreenProps> = ({
         </div>
 
         {/* Input */}
-        <div className="p-4 border-t border-gray-200 flex items-center gap-2 bg-white/70 rounded-b-3xl">
+        <div className="p-4 border-t border-gray-200 flex items-center gap-2 bg-white/70 sm:rounded-b-3xl rounded-none">
           <input
             type="text"
             placeholder="Type a message..."
