@@ -82,7 +82,7 @@ const ChatComponent: React.FC = () => {
     };
 
     try {
-      const response = await fetch(`/api/chat/${room}`, {
+      const response = await fetch(`/api/chat/${room.id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(messagePayload),
