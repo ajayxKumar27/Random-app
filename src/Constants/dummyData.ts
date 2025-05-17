@@ -1,19 +1,33 @@
-import { FaAppStoreIos, FaUser } from "react-icons/fa";
+import { FaAppStoreIos, FaUser, FaGamepad, FaComments } from "react-icons/fa";
 import { IoChatbubblesOutline } from "react-icons/io5";
 
 export const HomePageItems = [
-/*   {
-    id: 1,
-    title: "User List",
-    description: "A list of users with their details",
-    icon: FaAppStoreIos, 
-    route: "/users",
-  }, */
   {
     id: 1,
-    title: "Chat App",
-    description: "let's chat with each other",
-    icon: IoChatbubblesOutline , 
-    route: "/chat",
+    title: "Communication & Collaboration",
+    icon: FaComments,
+    subCategory: [
+      {
+        id: 2,
+        title: "Instant Messaging Platform",
+        description: "Experience seamless, real-time conversations with individuals and groups. Share files, emojis, and stay connected securely from anywhere.",
+        icon: IoChatbubblesOutline,
+        route: "/chat",
+      }
+    ],
+  },
+  {
+    id: 2,
+    title: "Games & Entertainment",
+    icon: FaGamepad,
+    subCategory: [
+      {
+        id: 1,
+        title: "2048 Puzzle Challenge",
+        description: "Test your logic and strategy skills in the classic 2048 puzzle. Merge tiles, plan your moves, and aim for the highest score!",
+        icon: FaAppStoreIos,
+        route: "/games/2048",
+      }
+    ]
   },
 ];

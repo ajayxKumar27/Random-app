@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@react-icons/all-files": "^4.1.0",
+    "classnames": "^2.5.1",
+    "framer-motion": "^12.12.1",
     "next": "15.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

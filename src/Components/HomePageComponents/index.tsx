@@ -4,7 +4,7 @@ import { HomePageItems } from "@/Constants/dummyData";
 
 const Index = () => {
   return (
-    <div className="HomePage grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 p-6">
+    <div className="HomePage w-full p-4">
       {HomePageItems?.map((item) => (
         <HomePageCard key={item.id} item={item} />
       ))}
