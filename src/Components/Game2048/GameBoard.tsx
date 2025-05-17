@@ -10,9 +10,13 @@ import {
   canMove,
 } from '@/lib/2048GameLogic'
 import { AnimatePresence, motion } from 'framer-motion'
+import { themeClasses } from '@/Constants/dummyData'
 
 type GridType = number[][]
+
 const STORAGE_KEY = '2048_game_grid'
+const THEMES = ['teal', 'blue', 'purple', 'violet'] as const
+type ThemeType = typeof THEMES[number]
 
 const createEmptyGrid = (): GridType => Array.from({ length: 4 }, () => Array(4).fill(0))
 const initializeGrid = (): GridType => addRandomTile(addRandomTile(createEmptyGrid()))
@@ -20,6 +24,8 @@ const initializeGrid = (): GridType => addRandomTile(addRandomTile(createEmptyGr
 const GameBoard: React.FC = () => {
   const [grid, setGrid] = useState<GridType | null>(null)
   const [gameOver, setGameOver] = useState(false)
+  const [theme, setTheme] = useState<ThemeType>('teal')
+
   const boardRef = useRef<HTMLDivElement>(null)
   const touchStartX = useRef(0)
   const touchStartY = useRef(0)
@@ -89,9 +95,15 @@ const GameBoard: React.FC = () => {
     boardRef.current?.focus()
   }
 
+  const cycleTheme = () => {
+    const currentIndex = THEMES.indexOf(theme)
+    const nextTheme = THEMES[(currentIndex + 1) % THEMES.length]
+    setTheme(nextTheme)
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-200 to-white flex flex-col items-center justify-center p-6 sm:p-8">
-      <h1 className="text-6xl md:text-7xl font-extrabold text-purple-900 drop-shadow-md mb-8 select-none">
+    <div className={`min-h-screen bg-gradient-to-br ${themeClasses[theme].bg} flex flex-col items-center justify-center p-6 sm:p-8 transition-colors duration-300`}>
+      <h1 className={`text-6xl md:text-7xl font-extrabold ${themeClasses[theme].text} drop-shadow-md mb-4 select-none`}>
         2048
       </h1>
 
@@ -101,8 +113,7 @@ const GameBoard: React.FC = () => {
         onKeyDown={handleKeyDown}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
-        className="relative grid grid-cols-4 gap-5 bg-white rounded-3xl p-5 shadow-lg max-w-screen-sm w-full
-          touch-none sm:max-w-md overflow-hidden"
+        className="relative grid grid-cols-4 gap-5 bg-white rounded-3xl p-5 shadow-lg max-w-screen-sm w-full touch-none sm:max-w-md overflow-hidden"
         style={{ outline: 'none', aspectRatio: '1 / 1' }}
       >
         {grid ? (
@@ -116,7 +127,7 @@ const GameBoard: React.FC = () => {
                 exit={{ scale: 0, opacity: 0 }}
                 transition={{ duration: 0.25, ease: 'easeOut' }}
               >
-                <Tile value={val} />
+                <Tile value={val} theme={theme} />
               </motion.div>
             ))}
           </AnimatePresence>
@@ -127,7 +138,7 @@ const GameBoard: React.FC = () => {
             animate={{ rotate: 360 }}
             transition={{ repeat: Infinity, duration: 1.2, ease: 'linear' }}
           >
-            <div className="w-16 h-16 border-8 border-t-transparent border-purple-300 rounded-full" />
+            <div className={`w-16 h-16 border-8 border-t-transparent ${themeClasses[theme].border} rounded-full`} />
           </motion.div>
         )}
       </div>
@@ -136,23 +147,27 @@ const GameBoard: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-8 text-3xl font-extrabold text-purple-600 drop-shadow-md select-none"
+          className={`mt-8 text-3xl font-extrabold ${themeClasses[theme].shadow} drop-shadow-md select-none`}
         >
           Game Over!
         </motion.div>
       )}
 
-      <button
-        onClick={resetGame}
-        className="mt-8 px-6 py-3 rounded-full bg-gradient-to-br from-purple-400 via-blue-400 to-indigo-400
-          text-white font-semibold text-lg shadow-md hover:brightness-110
-          focus:outline-none focus:ring-4 focus:ring-blue-300 cursor-pointer
-          transition duration-300"
-      >
-        Reset Game
-      </button>
-
-      <p className="mt-6 text-purple-800 text-center select-none max-w-sm tracking-wide">
+      <div className='flex align-center gap-8'>
+        <button
+          onClick={cycleTheme}
+          className={`mt-6 px-6 py-3 rounded-full bg-gradient-to-br ${themeClasses[theme].gradientBtn} text-white font-semibold text-lg shadow-md hover:brightness-110 transition cursor-pointer`}
+        >
+          Change Theme
+        </button>
+        <button
+          onClick={resetGame}
+          className={`mt-6 px-6 py-3 rounded-full bg-gradient-to-br ${themeClasses[theme].gradientBtn} text-white font-semibold text-lg shadow-md hover:brightness-110 transition cursor-pointer`}
+        >
+          Reset Game
+        </button>
+      </div>
+      <p className={`mt-6 ${themeClasses[theme].info} text-center select-none max-w-sm tracking-wide`}>
         Use arrow keys or swipe on mobile to move the tiles.
       </p>
     </div>
