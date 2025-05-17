@@ -7,42 +7,42 @@ interface TileProps {
 
 const getTileColor = (val: number): string => {
   const colors: Record<number, string> = {
-    0: 'bg-gray-800',
-    2: 'bg-yellow-100 text-gray-900',
-    4: 'bg-yellow-200 text-gray-900',
-    8: 'bg-orange-400 text-white shadow-lg',
-    16: 'bg-orange-500 text-white shadow-lg',
-    32: 'bg-red-500 text-white shadow-lg',
-    64: 'bg-red-600 text-white shadow-lg',
-    128: 'bg-green-400 text-white shadow-lg',
-    256: 'bg-green-500 text-white shadow-lg',
-    512: 'bg-blue-400 text-white shadow-lg',
-    1024: 'bg-blue-500 text-white shadow-lg',
-    2048: 'bg-purple-600 text-white shadow-xl',
+    0: 'bg-white', // clean white for empty
+    2: 'bg-sky-100 text-sky-900',
+    4: 'bg-sky-200 text-sky-900',
+    8: 'bg-lavender-200 text-purple-900 shadow-sm',
+    16: 'bg-lavender-300 text-purple-900 shadow-sm',
+    32: 'bg-purple-300 text-purple-800 shadow-md',
+    64: 'bg-purple-400 text-purple-800 shadow-md',
+    128: 'bg-indigo-300 text-indigo-900 shadow-lg',
+    256: 'bg-indigo-400 text-indigo-900 shadow-lg',
+    512: 'bg-blue-300 text-blue-900 shadow-lg',
+    1024: 'bg-blue-400 text-blue-900 shadow-lg',
+    2048: 'bg-violet-500 text-white shadow-xl',
   }
-  return colors[val] || 'bg-gray-700 text-white'
+  return colors[val] || 'bg-sky-200 text-sky-900'
 }
 
 const Tile: React.FC<TileProps> = ({ value }) => {
   return (
     <motion.div
       className={clsx(
-        'w-full aspect-square',  // fill container cell & keep square
+        'w-full aspect-square',
         'flex items-center justify-center',
-        'font-extrabold text-xl sm:text-2xl md:text-3xl',  // scalable font size
-        'rounded-lg shadow-inner select-none',
+        'font-extrabold text-xl sm:text-2xl md:text-3xl',
+        'rounded-lg select-none',
+        'border border-gray-200',
         getTileColor(value)
       )}
       layout
-      initial={{ scale: 0.5, opacity: 0 }}
+      initial={{ scale: 0.7, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      transition={{ type: 'spring', stiffness: 260, damping: 20 }}
       aria-label={value !== 0 ? value.toString() : 'empty'}
       role="gridcell"
     >
       {value !== 0 ? value : ''}
     </motion.div>
-
   )
 }
 

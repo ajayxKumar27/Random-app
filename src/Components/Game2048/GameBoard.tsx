@@ -20,7 +20,6 @@ const initializeGrid = (): GridType => addRandomTile(addRandomTile(createEmptyGr
 const GameBoard: React.FC = () => {
   const [grid, setGrid] = useState<GridType | null>(null)
   const [gameOver, setGameOver] = useState(false)
-  const [hasMoved, setHasMoved] = useState(false)
   const boardRef = useRef<HTMLDivElement>(null)
   const touchStartX = useRef(0)
   const touchStartY = useRef(0)
@@ -51,7 +50,6 @@ const GameBoard: React.FC = () => {
 
     if (newGrid && JSON.stringify(newGrid) !== JSON.stringify(grid)) {
       setGrid(addRandomTile(newGrid))
-      setHasMoved(true)
     }
   }
 
@@ -87,14 +85,13 @@ const GameBoard: React.FC = () => {
     const newGrid = initializeGrid()
     setGrid(newGrid)
     setGameOver(false)
-    setHasMoved(false)
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newGrid))
     boardRef.current?.focus()
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-yellow-400 via-red-400 to-pink-500 flex flex-col items-center justify-center p-4">
-      <h1 className="text-6xl md:text-7xl font-extrabold text-white drop-shadow-lg mb-8 select-none">
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-200 to-white flex flex-col items-center justify-center p-6 sm:p-8">
+      <h1 className="text-6xl md:text-7xl font-extrabold text-purple-900 drop-shadow-md mb-8 select-none">
         2048
       </h1>
 
@@ -104,7 +101,7 @@ const GameBoard: React.FC = () => {
         onKeyDown={handleKeyDown}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
-        className="relative grid grid-cols-4 gap-4 bg-gray-900 rounded-xl p-4 shadow-2xl max-w-screen-sm  w-full
+        className="relative grid grid-cols-4 gap-5 bg-white rounded-3xl p-5 shadow-lg max-w-screen-sm w-full
           touch-none sm:max-w-md overflow-hidden"
         style={{ outline: 'none', aspectRatio: '1 / 1' }}
       >
@@ -117,7 +114,7 @@ const GameBoard: React.FC = () => {
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0, opacity: 0 }}
-                transition={{ duration: 0.2, ease: 'easeOut' }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
               >
                 <Tile value={val} />
               </motion.div>
@@ -130,7 +127,7 @@ const GameBoard: React.FC = () => {
             animate={{ rotate: 360 }}
             transition={{ repeat: Infinity, duration: 1.2, ease: 'linear' }}
           >
-            <div className="w-16 h-16 border-8 border-t-transparent border-white rounded-full" />
+            <div className="w-16 h-16 border-8 border-t-transparent border-purple-300 rounded-full" />
           </motion.div>
         )}
       </div>
@@ -139,7 +136,7 @@ const GameBoard: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-6 text-3xl font-extrabold text-red-600 drop-shadow-lg select-none"
+          className="mt-8 text-3xl font-extrabold text-purple-600 drop-shadow-md select-none"
         >
           Game Over!
         </motion.div>
@@ -147,12 +144,15 @@ const GameBoard: React.FC = () => {
 
       <button
         onClick={resetGame}
-        className="mt-8 px-6 py-3 rounded-full bg-white text-gray-900 font-semibold text-lg shadow-lg hover:bg-yellow-400 hover:text-white transition-all duration-300 cursor-pointer"
+        className="mt-8 px-6 py-3 rounded-full bg-gradient-to-br from-purple-400 via-blue-400 to-indigo-400
+          text-white font-semibold text-lg shadow-md hover:brightness-110
+          focus:outline-none focus:ring-4 focus:ring-blue-300 cursor-pointer
+          transition duration-300"
       >
         Reset Game
       </button>
 
-      <p className="mt-6 text-white text-center select-none max-w-sm">
+      <p className="mt-6 text-purple-800 text-center select-none max-w-sm tracking-wide">
         Use arrow keys or swipe on mobile to move the tiles.
       </p>
     </div>
