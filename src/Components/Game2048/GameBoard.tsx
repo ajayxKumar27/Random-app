@@ -106,6 +106,12 @@ const GameBoard: React.FC = () => {
       <h1 className={`text-6xl md:text-7xl font-extrabold ${themeClasses[theme].text} drop-shadow-md mb-4 select-none`}>
         2048
       </h1>
+      <button
+          onClick={cycleTheme}
+          className={`w-full sm:w-auto mt-2 sm:mt-6 px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-gradient-to-br ${themeClasses[theme].gradientBtn} text-white font-semibold text-base sm:text-lg shadow-md hover:brightness-110 transition cursor-pointer mb-4`}
+        >
+          Change Theme
+        </button>
 
       <div
         ref={boardRef}
@@ -152,21 +158,13 @@ const GameBoard: React.FC = () => {
           Game Over!
         </motion.div>
       )}
-
-      <div className='flex align-center gap-8'>
-        <button
-          onClick={cycleTheme}
-          className={`mt-6 px-6 py-3 rounded-full bg-gradient-to-br ${themeClasses[theme].gradientBtn} text-white font-semibold text-lg shadow-md hover:brightness-110 transition cursor-pointer`}
-        >
-          Change Theme
-        </button>
+        
         <button
           onClick={resetGame}
-          className={`mt-6 px-6 py-3 rounded-full bg-gradient-to-br ${themeClasses[theme].gradientBtn} text-white font-semibold text-lg shadow-md hover:brightness-110 transition cursor-pointer`}
+          className={`w-full sm:w-auto mt-4 sm:mt-6 px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-gradient-to-br ${themeClasses[theme].gradientBtn} text-white font-semibold text-base sm:text-lg shadow-md hover:brightness-110 transition cursor-pointer`}
         >
           Reset Game
         </button>
-      </div>
       <p className={`mt-6 ${themeClasses[theme].info} text-center select-none max-w-sm tracking-wide`}>
         Use arrow keys or swipe on mobile to move the tiles.
       </p>
