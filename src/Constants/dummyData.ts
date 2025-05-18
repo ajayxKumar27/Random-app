@@ -6,13 +6,14 @@ export const HomePageItems = [
     id: 1,
     title: "Communication & Collaboration",
     icon: FaComments,
+    route: "/social",
     subCategory: [
       {
         id: 2,
         title: "Instant Messaging Platform",
         description: "Experience seamless, real-time conversations with individuals and groups. Share files, emojis, and stay connected securely from anywhere.",
         icon: IoChatbubblesOutline,
-        route: "/chat",
+        route: "/social/chat",
       }
     ],
   },
@@ -20,6 +21,7 @@ export const HomePageItems = [
     id: 2,
     title: "Games & Entertainment",
     icon: FaGamepad,
+    route: "/games",
     subCategory: [
       {
         id: 1,
@@ -27,7 +29,14 @@ export const HomePageItems = [
         description: "Test your logic and strategy skills in the classic 2048 puzzle. Merge tiles, plan your moves, and aim for the highest score!",
         icon: FaAppStoreIos,
         route: "/games/2048",
-      }
+      },
+      {
+        id: 2,
+        title: "Tic Tac Toe",
+        description: "Challenge your friends or play against the computer in this classic game. Can you get three in a row?",
+        icon: FaAppStoreIos,
+        route: "/games/tictactoe",
+      },
     ]
   },
 ];
