@@ -11,7 +11,7 @@ const GamesPage = () => {
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-300 ${
+      className={`min-h-[calc(100vh-64px)] transition-colors duration-300 ${
         dark
           ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-950"
           : "bg-gradient-to-br from-blue-100 via-purple-100 to-white"

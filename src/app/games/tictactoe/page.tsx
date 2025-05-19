@@ -1,5 +1,10 @@
 'use client';
+import { themeClasses } from "@/Constants/dummyData";
 import React, { useState } from "react";
+
+// Theme options for Tic Tac Toe
+type ThemeType = typeof THEMES[number];
+const THEMES = ['teal', 'blue', 'purple', 'violet'] as const;
 
 type Player = "X" | "O" | null;
 
@@ -48,6 +53,7 @@ const Square: React.FC<{
 const TicTacToe: React.FC = () => {
   const [squares, setSquares] = useState<Player[]>(Array(9).fill(null));
   const [xIsNext, setXIsNext] = useState(true);
+  const [theme, setTheme] = useState<ThemeType>('blue');
   const winner = getWinner(squares);
 
   const handleClick = (i: number) => {
@@ -61,6 +67,12 @@ const TicTacToe: React.FC = () => {
   const handleReset = () => {
     setSquares(Array(9).fill(null));
     setXIsNext(true);
+  };
+
+  const cycleTheme = () => {
+    const currentIndex = THEMES.indexOf(theme);
+    const nextTheme = THEMES[(currentIndex + 1) % THEMES.length];
+    setTheme(nextTheme);
   };
 
   // Highlight winning cells
@@ -79,10 +91,16 @@ const TicTacToe: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 via-purple-100 to-white p-3">
-      <h1 className="text-4xl sm:text-5xl font-extrabold text-blue-700 mb-6 drop-shadow-lg tracking-tight select-none">
+    <div className={`min-h-[calc(100vh-64px)] flex flex-col items-center justify-center bg-gradient-to-br ${themeClasses[theme].bg} p-3 transition-colors duration-300`}>
+      <h1 className={`text-4xl sm:text-5xl font-extrabold ${themeClasses[theme].text} mb-6 drop-shadow-lg tracking-tight select-none`}>
         Tic Tac Toe
       </h1>
+      <button
+        onClick={cycleTheme}
+        className={`w-full sm:w-auto mt-2 sm:mt-4 px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-gradient-to-br ${themeClasses[theme].gradientBtn} text-white font-semibold text-base sm:text-lg shadow-md hover:brightness-110 transition cursor-pointer mb-4`}
+      >
+        Change Theme
+      </button>
       <div className="bg-white/80 rounded-3xl shadow-2xl p-4 sm:p-8 flex flex-col items-center w-full max-w-xs sm:max-w-md">
         <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-6">
           {squares.map((val, i) => (
@@ -103,12 +121,12 @@ const TicTacToe: React.FC = () => {
         </div>
         <button
           onClick={handleReset}
-          className="mt-2 px-6 py-2 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-white font-bold shadow-md hover:brightness-110 transition"
+          className={`mt-2 px-6 py-2 rounded-full bg-gradient-to-br ${themeClasses[theme].gradientBtn} text-white font-bold shadow-md hover:brightness-110 transition`}
         >
           Reset Game
         </button>
       </div>
-      <p className="mt-6 text-gray-500 text-center text-sm select-none">
+      <p className={`mt-6 text-center text-sm select-none max-w-xs ${themeClasses[theme].info}`}>
         Play with a friend! Tap a cell to make your move.
       </p>
     </div>

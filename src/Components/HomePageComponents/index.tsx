@@ -10,13 +10,13 @@ const Index = () => {
 
   return (
     <div
-      className={`HomePage w-full min-h-screen transition-colors duration-300 ${
+      className={`HomePage w-full min-h-[calc(100vh-64px)] transition-colors duration-300 ${
         dark
           ? "bg-gray-900"
           : "bg-gradient-to-br from-blue-100 via-purple-100 to-white"
       }`}
     >
-      <div className="flex flex-wrap gap-6 w-full py-8 px-8">
+      <div className="flex flex-wrap gap-2 sm:gap-6 w-full py-8 px-8">
         {HomePageItems?.map((item) => (
           <HomePageCard key={item.id} item={item} />
         ))}

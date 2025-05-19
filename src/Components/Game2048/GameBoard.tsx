@@ -24,7 +24,7 @@ const initializeGrid = (): GridType => addRandomTile(addRandomTile(createEmptyGr
 const GameBoard: React.FC = () => {
   const [grid, setGrid] = useState<GridType | null>(null)
   const [gameOver, setGameOver] = useState(false)
-  const [theme, setTheme] = useState<ThemeType>('teal')
+  const [theme, setTheme] = useState<ThemeType>('blue')
 
   const boardRef = useRef<HTMLDivElement>(null)
   const touchStartX = useRef(0)
@@ -102,7 +102,7 @@ const GameBoard: React.FC = () => {
   }
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br ${themeClasses[theme].bg} flex flex-col items-center justify-center p-6 sm:p-8 transition-colors duration-300`}>
+    <div className={`min-h-[calc(100vh-64px)] bg-gradient-to-br ${themeClasses[theme].bg} flex flex-col items-center justify-center p-6 sm:p-8 transition-colors duration-300`}>
       <h1 className={`text-6xl md:text-7xl font-extrabold ${themeClasses[theme].text} drop-shadow-md mb-4 select-none`}>
         2048
       </h1>
