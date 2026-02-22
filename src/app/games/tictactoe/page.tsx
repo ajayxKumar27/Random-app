@@ -33,6 +33,8 @@ const TicTacToe: React.FC = () => {
   const [playerNames, setPlayerNames] = useState<{ [key: string]: string }>({});
   const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const pendingUpdateRef = useRef(false);
+  const lastGameStateRef = useRef<string>('');
+  const lastFetchTimeRef = useRef<number>(0);
 
   // Initialize player ID and name from localStorage
   useEffect(() => {
@@ -74,15 +76,30 @@ const TicTacToe: React.FC = () => {
   // Fetch game state periodically
   const fetchGameState = useCallback(async (roomId: string) => {
     try {
+      // Skip if there's a pending move or if last fetch was too recent (debounce)
+      const now = Date.now();
+      if (pendingUpdateRef.current || (now - lastFetchTimeRef.current) < 300) {
+        return;
+      }
+      lastFetchTimeRef.current = now;
+
       const response = await fetch(`/api/tictactoe/${roomId}/state`);
       if (!response.ok) throw new Error('Failed to fetch game state');
       const roomData = await response.json();
       
       // Only update if there's no pending move (optimistic update in progress)
       if (!pendingUpdateRef.current) {
-        setGameState(roomData.gameState);
+        // Serialize current game state to check if anything actually changed
+        const gameStateHash = JSON.stringify(roomData.gameState);
         
-        // Update currentRoom with latest player information - direct update
+        // Skip update if game state hasn't changed (prevents flickering)
+        if (gameStateHash === lastGameStateRef.current) {
+          return;
+        }
+        
+        lastGameStateRef.current = gameStateHash;
+        
+        // BATCH ALL STATE UPDATES - single render cycle
         setCurrentRoom({
           id: roomData.id,
           name: roomData.name,
@@ -92,7 +109,8 @@ const TicTacToe: React.FC = () => {
           wins: roomData.gameState.wins,
         });
         
-        // Store player names from the room data
+        setGameState(roomData.gameState);
+        
         if (roomData.playerNames) {
           setPlayerNames(roomData.playerNames);
         }
@@ -105,7 +123,8 @@ const TicTacToe: React.FC = () => {
   useEffect(() => {
     if (gamePhase === 'gaming' && currentRoom) {
       fetchGameState(currentRoom.id);
-      const interval = setInterval(() => fetchGameState(currentRoom.id), 500);
+      // Polling every 300ms is safer than 500ms on deployed networks
+      const interval = setInterval(() => fetchGameState(currentRoom.id), 300);
       pollIntervalRef.current = interval;
       return () => clearInterval(interval);
     }
@@ -159,6 +178,7 @@ const TicTacToe: React.FC = () => {
       });
 
       setGameState(data.room.gameState);
+      lastGameStateRef.current = JSON.stringify(data.room.gameState);
       
       // Store all player names including opponent
       if (data.room.playerNames) {
@@ -193,6 +213,7 @@ const TicTacToe: React.FC = () => {
 
     // Set pending flag to prevent polling from overwriting optimistic update
     pendingUpdateRef.current = true;
+    lastGameStateRef.current = ''; // Clear hash to force next poll update
 
     // OPTIMISTIC UPDATE - Update UI immediately
     const newSquares = [...gameState.squares];
@@ -222,20 +243,25 @@ const TicTacToe: React.FC = () => {
 
       const data = await response.json();
       if (response.ok) {
+        lastGameStateRef.current = JSON.stringify(data.gameState);
         setGameState(data.gameState);
       } else {
         setError(data.error || 'Failed to make move');
         // Revert to previous state on error
         setGameState(gameState);
+        lastGameStateRef.current = '';
       }
     } catch (err) {
       console.error('Error making move:', err);
       setError('Failed to make move');
       // Revert to previous state on error
       setGameState(gameState);
+      lastGameStateRef.current = '';
     } finally {
-      // Clear pending flag - API call is done
-      pendingUpdateRef.current = false;
+      // Clear pending flag after a small delay to ensure polling doesn't interfere
+      setTimeout(() => {
+        pendingUpdateRef.current = false;
+      }, 50);
     }
   };
 
@@ -244,6 +270,7 @@ const TicTacToe: React.FC = () => {
 
     // Set pending flag to prevent polling from overwriting optimistic update
     pendingUpdateRef.current = true;
+    lastGameStateRef.current = ''; // Clear hash to force next poll update
 
     // OPTIMISTIC UPDATE - Reset board immediately
     const optimisticGameState = {
@@ -269,18 +296,23 @@ const TicTacToe: React.FC = () => {
 
       const data = await response.json();
       if (response.ok) {
+        lastGameStateRef.current = JSON.stringify(data.gameState);
         setGameState(data.gameState);
       } else {
         // Revert on error
         setGameState(gameState);
+        lastGameStateRef.current = '';
       }
     } catch (err) {
       console.error('Error resetting game:', err);
       // Revert on error
       setGameState(gameState);
+      lastGameStateRef.current = '';
     } finally {
-      // Clear pending flag - API call is done
-      pendingUpdateRef.current = false;
+      // Clear pending flag after a small delay to ensure polling doesn't interfere
+      setTimeout(() => {
+        pendingUpdateRef.current = false;
+      }, 50);
     }
   };
 
@@ -297,6 +329,7 @@ const TicTacToe: React.FC = () => {
 
       setCurrentRoom(null);
       setGameState(null);
+      lastGameStateRef.current = ''; // Clear state hash
       setGamePhase('roomSelection');
       if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
       await fetchRooms();
